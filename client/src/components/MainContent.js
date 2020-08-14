@@ -1,15 +1,17 @@
 import React,{useState,useEffect} from "react"
 import logo from "../../src/image/arrow.png"
 import Dropdown from "./Dropdown"
+import ConvertCurrency from "./ConvertCurrency"
 
 var url1,url2 = null
 function MainContent(){
 
  //initialize the url of image, set it to null
- 
+
  const [amount, setAmount] = useState(null)
  const [value1, setValue1] = useState(null)
  const [value2, setValue2] = useState(null)
+ const [apiResponse, setApiResponse] = useState({})
 
  //style button and input
  const logoStyle = {
@@ -24,13 +26,13 @@ function MainContent(){
     width: 70,
     height: 25
   }
- 
+
  //handle onChange function, 'e' for event
  const DetectInputValue = e =>{
   setAmount(e.target.value)
  }
 
- //handle changes of selection, update the value of selection and url of flag. 
+ //handle changes of selection, update the value of selection and url of flag.
  const handleChange = e => {
   //console.log(e.target.getAttribute('id'))
   if(e.target.getAttribute('id')=== 'selectForm1'){
@@ -52,10 +54,13 @@ function MainContent(){
  }
 
  //validate input amount before submission to server
- const Validate = (e)=>{
+ const handleSubmit = (e)=>{
    //prevent refreshing the page after form submission
    e.preventDefault();
-   
+
+   //set a boolean for checking amount validation
+   var amountValidated = false
+
    //here is to validate the selects of currency
    console.log(value1 + ' was selected in currency left hand side')
    console.log(value2 + ' was selected in currency right hand side')
@@ -78,32 +83,73 @@ function MainContent(){
      else if(amount>1000000){
        alert('Please amount no more than 1 million')
      }
+     else
+       amountValidated = true;
 
    }
-   else alert('Please input an amount!')
+   else {
+      amountValidated = false;
+      alert('Please input an amount!')
+   }
 
+   //send data to the server if all inputs are validated
+   if(value1!=null && value2!=null && amountValidated==true)
+   {
+     fetch('http://localhost:3001/api', {
+        method: 'Post',
+        mode: 'cors',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          "currency1": value1,
+          "currency2": value2,
+          "total": amount
+        })
+     })
+      .then(res => res.json())
+       .then(data => {
+         console.log(data)
+         setApiResponse(data)
+        })
+        .catch(err => console.error("Error:", err))
+
+   }
  }
 
  return (
       <main>
        <div className="container">
-        <form action='/' id='currencyForm' onSubmit={Validate} method="post" >
-         <input id="amount" name="total" style={inputStyle}  onChange={DetectInputValue} />
+        <form id='currencyForm' onSubmit={handleSubmit} method='post' >
+         <input id="Amount" name="total" style={inputStyle}  onChange={DetectInputValue} />
          <select id="selectForm1" name="currency1" onChange={handleChange}>
           <Dropdown />
          </select>
          <img src={url1} />
          <img src={logo} alt="a logo" id="logo" style={logoStyle}/>
          <select id="selectForm2" name="currency2" onChange={handleChange}>
-          <Dropdown /> 
+          <Dropdown />
          </select>
          <img src={url2} />
         </form>
          <input type="submit" value="Convert" style={submitStyle} form='currencyForm' />
        </div>
+       <div className="apiMessages">
+        <ConvertCurrency 
+         reponseData={apiResponse}
+         total={apiResponse.num} 
+         currency1={apiResponse.codeOfcur1}
+         currency2={apiResponse.codeOfcur2}
+         amountConvert={apiResponse.exchangeRate}
+         curr1={apiResponse.price1}
+         curr2={apiResponse.price2}
+         />
+       </div>
       </main>
 
     )
 }
+
+
 
 export default MainContent
