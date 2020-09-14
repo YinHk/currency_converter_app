@@ -1,5 +1,5 @@
 import React from "react"
-
+import "../style.css"
 
 function Header() {
 
@@ -9,15 +9,18 @@ function Header() {
     let year = today.getFullYear()
 
     return (
-      <header>
-      <div className="title">
-       <h1>Your Currency Converter</h1>
-      </div>
-      <div className="date"> 
-         <p>{year+"-"+month+"-"+date}</p>
-         <p>This currency converter is up to date from {year+"-"+month+"-"+date}.<br/>Exchange rates will be updated per 24 hour</p>
+     <header>
+      <div className="head">
+       <div className="row">
+        <div className="col-md-8 pt-3 pl-5">
+          <h2>Currency Converter</h2>
         </div>
-      </header>
+        <div className="col-md-4 pt-3 pl-5"> 
+          <p>This currency converter is up to date from {year+"-"+month+"-"+date}.<br/>Exchange rates will be updated per 24 hour</p>
+        </div>
+       </div>
+      </div>
+     </header>
 
     )
 }

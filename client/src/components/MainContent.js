@@ -2,6 +2,7 @@ import React,{useState,useEffect} from "react"
 import logo from "../../src/image/arrow.png"
 import Dropdown from "./Dropdown"
 import ConvertCurrency from "./ConvertCurrency"
+import "../style.css"
 
 var url1,url2 = null
 function MainContent(){
@@ -12,19 +13,20 @@ function MainContent(){
  const [value1, setValue1] = useState(null)
  const [value2, setValue2] = useState(null)
  const [apiResponse, setApiResponse] = useState({})
+ const [bgColor, setBgColor] = useState(null)
 
  //style button and input
  const logoStyle = {
-    width: 40,
+    width: 45,
     height: 35
   }
  const inputStyle = {
-    width: 80,
-    height: 20
+    width: 90,
+    height: 33
   }
  const submitStyle = {
     width: 70,
-    height: 25
+    height: 35
   }
 
  //handle onChange function, 'e' for event
@@ -111,6 +113,7 @@ function MainContent(){
        .then(data => {
          console.log(data)
          setApiResponse(data)
+         setBgColor("bgChange")
         })
         .catch(err => console.error("Error:", err))
 
@@ -118,8 +121,9 @@ function MainContent(){
  }
 
  return (
-      <main>
+      <main >
        <div className="container">
+       <div className="row">
         <form id='currencyForm' onSubmit={handleSubmit} method='post' >
          <input id="Amount" name="total" style={inputStyle}  onChange={DetectInputValue} />
          <select id="selectForm1" name="currency1" onChange={handleChange}>
@@ -132,8 +136,10 @@ function MainContent(){
          </select>
          <img src={url2} />
         </form>
-         <input type="submit" value="Convert" style={submitStyle} form='currencyForm' />
+        </div>
+         <input id="btn" type="submit" value="Convert" style={submitStyle} form='currencyForm' />
        </div>
+       <div className={bgColor}>
        <div className="apiMessages">
         <ConvertCurrency 
          reponseData={apiResponse}
@@ -144,6 +150,7 @@ function MainContent(){
          curr1={apiResponse.price1}
          curr2={apiResponse.price2}
          />
+       </div>
        </div>
       </main>
 

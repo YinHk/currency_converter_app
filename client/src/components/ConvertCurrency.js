@@ -1,4 +1,5 @@
 import React from "react";
+import "../style.css"
 
 
 const  ConvertCurrency = function(props){
@@ -12,6 +13,7 @@ const  ConvertCurrency = function(props){
           <h2>{props.amountConvert}    {props.currency2}</h2>
           <h4>1 {props.currency2} = {props.curr1} {props.currency1}</h4>
           <h4>1 {props.currency1} = {props.curr2} {props.currency2}</h4>
+          <p>Exchange rates will be updated per 24 hour</p>
          </div>
       
       } else {

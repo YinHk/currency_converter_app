@@ -20,6 +20,61 @@ app.use(express.json({limit: '1mb'}))
 
 app.get('/', function (req,res){
      console.log('server is runnung')
+    // let now = new Date()
+    // console.log('Today: ' + now.toUTCString())
+     //let last30days = new Date(now.setDate(now.getDate() - 30)).getDate()
+     //console.log('Last 30th day: ' + last30days.toUTCString())
+
+
+
+
+     var d = new Date()
+     var date = d.getDate()
+     var month = d.getMonth()+1
+     var year = d.getFullYear()
+     var now = year.toString()+"-"+month.toString()+"-"+date.toString()
+     var last30date = new Date(d.setDate(d.getDate() - 30)).getDate()
+      //var D = new Date(d.setDate(d.getDate()-30)).getMonth()+2
+     var last30dateOfmonth = new Date(d.setDate(d.getDate() - 30)).getMonth()+2
+    // var ggg = new Date(d.setDate(d.getDate()-30)).getMonth()+2
+     var last30dateOfyear = new Date(d.setDate(d.getDate() - 30)).getFullYear()
+     console.log(now)
+     //console.log(last30date)
+    // console.log(D)
+     console.log(last30dateOfmonth)
+    // console.log(ggg)
+    // console.log(last30dateOfyear)
+     var back = last30dateOfyear.toString()+"-"+last30dateOfmonth.toString()+"-"+last30date.toString()
+     console.log(back)
+
+     const url = "https://api.exchangeratesapi.io/history?start_at=2018-01-01&end_at=2018-09-01&base=USD"
+     http.get(url, function(resp){
+       console.log(resp.statusCode)
+
+       resp.on("data", function(data){
+        //const dataGetback = JSON.parse(data)
+        console.log(JSON.parse(data))
+       })
+
+    })
+
+   })
+
+app.post('/graph', function (req,res){
+    res.status(200)
+    console.log("I got a request")
+    /*let today = new Date()
+    let date = today.getDate()
+    let month = today.getMonth()+1
+    let year = today.getFullYear()
+    let now = year.toString()+"-"+month.toString()+"-"+date.toString()
+    let last30date = new Date(today.setDate(today.getDate() - 30)).getDate()
+    let last30dateOfmonth = new Date(today.setDate(today.getDate() - 30)).getMonth()+2
+    let last30dateOfyear = new Date(today.setDate(today.getDate() - 30)).getFullYear()
+    console.log(now)
+    console.log(last30date.toString())
+    console.log(last30dateOfmonth.toString())
+    console.log(last30dateOfyear.toString())*/
 
 })
 
