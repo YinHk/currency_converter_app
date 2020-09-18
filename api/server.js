@@ -3,6 +3,7 @@ const express = require("express")
 
 const bodyParser = require("body-parser")
 const cors = require("cors")
+require('dotenv').config()
 //const router = express.Router();
 const app = express();
 
@@ -89,9 +90,10 @@ app.post('/api', function(req,res){
    console.log(cur1)
    console.log(cur2)
 
-   const apiKey = "ugzzCe04BtL12c3Zz9qeNjOdHa3DAkFOxQZakLIsKW5vA02mMr"
 
-   const url = "https://fcsapi.com/api-v2/forex/converter?pair1=" + cur1 + "&pair2=" + cur2 + "&amount=" + amountOfcurrency + "&access_key=" + apiKey
+   const API_KEY = process.env.REACT_APP_API_KEY
+
+   const url = "https://fcsapi.com/api-v2/forex/converter?pair1=" + cur1 + "&pair2=" + cur2 + "&amount=" + amountOfcurrency + "&access_key=" + API_KEY
 
    http.get(url, function(resp){
     console.log(resp.statusCode)
