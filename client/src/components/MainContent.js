@@ -97,7 +97,7 @@ function MainContent(){
    //send data to the server if all inputs are validated
    if(value1!=null && value2!=null && amountValidated==true)
    {
-     fetch('http://localhost:3001/api', {
+     fetch('http://192.168.0.11/api', {
         method: 'Post',
         mode: 'cors',
         headers: {
